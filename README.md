@@ -55,7 +55,7 @@ npm test
 
 ## API Documentation
 
-### POST /api/shoppingList/shareList
+### POST /api/shareList
 
 - Share a shopping list with another user.
 - Request Body:
@@ -68,12 +68,12 @@ npm test
 
 - Returns: Shared shopping list details.
 
-### GET /api/shoppingList/sharedLists/:userId
+### GET /api/shareList
 
 - Get all shopping lists shared with a specific user.
 - Returns: Shared shopping lists.
 
-### POST /api/user/login
+### POST /api/login
 
 - User login.
 
