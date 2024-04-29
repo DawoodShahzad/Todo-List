@@ -1,4 +1,4 @@
-# Todo-List List APIS
+# Todo-List APIS
 
 This is a simple Todo List application with user authentication and profile management functionalities.
 
