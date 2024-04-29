@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-abstract class BaseController {
-    protected abstract service: any;
+class BaseController {   // abstract class BaseController {
+    protected service: any;  // protected abstract service: any;
+
     // Handle success response
     sendSuccessResponse(res: Response, message: String, data: Object) {
         res.status(200).json({ status: true, message: message, data: data });

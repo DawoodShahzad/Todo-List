@@ -20,7 +20,12 @@ interface UserDocument extends Document {
   profile_photo: string;
   contact_info: ContactInfoDocument;
   password: string;
+  otp: string;
+  otpExpiration: Date;
+  otpVerified: boolean;
   comparePassword(candidatePassword: string): Promise<boolean>;
+  generateOTP(): string;
+  isOTPValid(otp: string): boolean;
 }
 
 const UserSchema = new Schema<UserDocument>({
@@ -30,6 +35,9 @@ const UserSchema = new Schema<UserDocument>({
   profile_photo: { type: String, required: true, match: [/(ftp|http|https):\/\/[^ "]+$/, 'Please enter a valid URL'] },
   password: { type: String, required: true },
   contact_info: { type: ContactInfoSchema },
+  otp: { type: String },
+  otpExpiration: { type: Date },
+  otpVerified: { type: Boolean, default: false },
 });
 
 UserSchema.pre<UserDocument>('save', async function (next) {
@@ -44,6 +52,14 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 
 UserSchema.methods.comparePassword = async function (this: UserDocument, candidatePassword: string) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+UserSchema.methods.generateOTP = function (): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+UserSchema.methods.isOTPValid = function (otp: string): boolean {
+  return this.otp === otp && this.otpExpiration && this.otpExpiration > new Date();
 };
 
 const User = mongoose.model<UserDocument>('User', UserSchema);

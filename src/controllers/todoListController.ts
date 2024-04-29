@@ -18,7 +18,7 @@ class TodoListController extends BaseController {
       const todoList = await todoListService.createTodoList(req.body);
       this.sendCreatedResponse(res, todoList);
     } catch (error: any) {
-      this.sendErrorResponse(res, 400, error.message);
+      this.sendErrorResponse(res, error.message, {});
     }
   }
 
@@ -28,10 +28,10 @@ class TodoListController extends BaseController {
       if (!todoList) {
         this.sendNotFoundResponse(res, 'Todo list not found');
       } else {
-        this.sendSuccessResponse(res, 200, todoList);
+        this.sendSuccessResponse(res, 'success', todoList);
       }
     } catch (error: any) {
-      this.sendErrorResponse(res, 400, error.message);
+      this.sendErrorResponse(res, error.message, {});
     }
   }
 
@@ -41,10 +41,10 @@ class TodoListController extends BaseController {
       if (!todoList) {
         this.sendNotFoundResponse(res, 'Todo list not found');
       } else {
-        this.sendSuccessResponse(res, 200, todoList);
+        this.sendSuccessResponse(res, 'success', todoList);
       }
     } catch (error: any) {
-      this.sendErrorResponse(res, 400, error.message);
+      this.sendErrorResponse(res, error.message, {});
     }
   }
 
@@ -53,16 +53,16 @@ class TodoListController extends BaseController {
       await todoListService.deleteTodoList(req.params.id);
       this.sendNoContentResponse(res);
     } catch (error: any) {
-      this.sendErrorResponse(res, 400, error.message);
+      this.sendErrorResponse(res, error.message, {});
     }
   }
 
   async addItemToTodoList(req: Request, res: Response) {
     try {
       const todoList = await todoListService.addItemToTodoList(req.params.id, req.body);
-      this.sendSuccessResponse(res, 200, todoList);
+      this.sendSuccessResponse(res, 'success', todoList);
     } catch (error: any) {
-      this.sendErrorResponse(res, 400, error.message);
+      this.sendErrorResponse(res, error.message, {});
     }
   }
 
@@ -71,7 +71,7 @@ class TodoListController extends BaseController {
       await todoListService.deleteItemFromTodoList(req.params.id, req.params.itemId);
       this.sendNoContentResponse(res);
     } catch (error: any) {
-      this.sendErrorResponse(res, 400, error.message);
+      this.sendErrorResponse(res, error.message, {});
     }
   }
 }

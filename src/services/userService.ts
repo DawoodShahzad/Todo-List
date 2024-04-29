@@ -5,6 +5,7 @@ import userRepository from '../repositories/userRepository';
 import { v2 as cloudinaryV2 } from 'cloudinary';
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 
 dotenv.config()
 
@@ -24,16 +25,28 @@ const storage = new CloudinaryStorage({
 
 const parser = multer({ storage: storage });
 
-//console.log('process.env.JWT_SECRET: ',process.env.JWT_SECRET);
+// Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD
+  }
+});
 
 const userService = {
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, otp: string) {
     const user = await userRepository.getUserByEmail(email);
     if (!user) throw new Error('User not found');
 
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) throw new Error('Invalid password');
+
+    // Check if OTP is verified
+    if (!user.otpVerified || user.otp !== otp) {
+      throw new Error('OTP not verified');
+    }
 
     const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
     return { token };
@@ -49,6 +62,12 @@ const userService = {
         throw new Error('Email already exists');
       }
 
+      // Generate OTP
+      const otp = generateOTP();
+
+      // Send OTP via email
+      await sendOTP(userData.email, otp);
+
       // Upload profile photo to Cloudinary
       const result = await cloudinaryV2.uploader.upload(profilePicture.path);
       userData.profilePicture = result.secure_url;
@@ -58,8 +77,8 @@ const userService = {
       const hashedPassword = await bcrypt.hash(userData.password, salt);
       userData.password = hashedPassword;
 
-      // Save user data to database
-      const newUser = await userRepository.createUser(userData);
+      // Save user data and OTP to database
+      const newUser = await userRepository.createUser({ ...userData, otp });
 
       return newUser;
     } catch (error) {
@@ -85,6 +104,25 @@ const userService = {
     } catch (error) {
       throw new Error('Error updating user profile');
     }
+  }
+};
+
+// Function to generate OTP
+const generateOTP = (): string => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+// Function to send OTP via email
+const sendOTP = async (email: string, otp: string) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Account Verification OTP',
+      text: `Your OTP for account verification is: ${otp}`
+    });
+  } catch (error) {
+    throw new Error('Error sending OTP');
   }
 };
 
