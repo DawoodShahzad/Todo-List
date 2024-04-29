@@ -12,6 +12,9 @@ Node.js and TypeScript: Chosen for their scalability and maintainability.
 MongoDB: Selected as the primary data store for its flexibility and scalability.
 RESTful API Design: Followed industry best practices to ensure interoperability and ease of use.
 JWT for Authentication: Used JWT tokens for stateless authentication, providing security and scalability.
+Cloudinary for Cloud Storage
+Multer Library for uploading files to cloud
+
 Trade-offs:
 Performance vs. Security: Implemented bcrypt for password hashing to enhance security but might impact performance slightly due to computational overhead.
 Flexibility vs. Complexity: Opted for a flexible MongoDB schema, which may require additional validation to maintain data integrity.

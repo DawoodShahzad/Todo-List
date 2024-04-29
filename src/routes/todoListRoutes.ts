@@ -1,4 +1,3 @@
-// todoListRoutes.ts
 import express from 'express';
 import todoListController from '../controllers/todoListController';
 import authenticateToken from '../middlewares/authenticateToken';

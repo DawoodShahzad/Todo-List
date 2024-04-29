@@ -1,6 +1,6 @@
-# Shopping List API
+# Todo-List List APIS
 
-This repository contains the backend system for a web application that allows users to manage their shopping lists. The backend is implemented in Node.js using TypeScript and MongoDB as its primary data store.
+This is a simple Todo List application with user authentication and profile management functionalities.
 
 ## Prerequisites
 
@@ -9,23 +9,18 @@ Before running the application, make sure you have the following installed on yo
 - Node.js
 - MongoDB
 - npm (Node Package Manager)
+- Cloudinary Account (for profile picture storage)
 
 ## Installation
 
 1. Clone the repository to your local machine:
-
-git clone <repository_url>
-
+git clone https://github.com/DawoodShahzad/Todo-List.git
 
 2. Navigate to the project directory:
-
-cd shopping-list-api
-
+cd Todo-List
 
 3. Install dependencies:
-
 npm install
-
 
 ## Configuration
 
@@ -55,31 +50,91 @@ npm test
 
 ## API Documentation
 
-### POST /api/shareList
+### Base URL
 
-- Share a shopping list with another user.
-- Request Body:
+http://localhost:3000/api
 
-{
-"listId": "string",
-"sharedWith": "string",
-"permission": "string"
-}
+## Authentication
 
-- Returns: Shared shopping list details.
+### Login
 
-### GET /api/shareList
+URL: /login
+Method: POST
+Request Body:
+email: User's email address
+password: User's password
+Response: JWT token
 
-- Get all shopping lists shared with a specific user.
-- Returns: Shared shopping lists.
+### Signup
 
-### POST /api/login
+URL: /signup
+Method: POST
+Request Body:
+first_name: User's name
+email: User's email address
+password: User's password
+age: User's age
+profile_photo: User's profile picture (multipart/form-data)
+Response: User details with JWT token
 
-- User login.
+## User Profile
 
-- Request Body:
+### Update Profile
 
-{
-"email": "string",
-"password": "string"
-}
+URL: /profile
+Method: PUT
+Authentication: Required (JWT token)
+Request Body: Updated user details
+Response: Updated user details
+
+## Todo List
+
+### Create Todo List
+
+URL: /
+Method: POST
+Authentication: Required (JWT token)
+Request Body: Todo list details
+Response: Created todo list details
+
+### Get Todo List by ID
+
+URL: /:id
+Method: GET
+Authentication: Required (JWT token)
+Response: Todo list details
+
+### Update Todo List
+URL: /:id
+Method: PUT
+Authentication: Required (JWT token)
+Request Body: Updated todo list details
+Response: Updated todo list details
+
+### Delete Todo List
+URL: /:id
+Method: DELETE
+Authentication: Required (JWT token)
+Response: Success message
+
+### Add Item to Todo List
+URL: /:id/items
+Method: POST
+Authentication: Required (JWT token)
+Request Body: Todo item details
+Response: Updated todo list details
+
+### Delete Item from Todo List
+URL: /:id/items/:itemId
+Method: DELETE
+Authentication: Required (JWT token)
+Response: Updated todo list details
+
+## Technologies Used
+Node.js
+Express.js
+MongoDB
+Mongoose
+JWT
+Bcrypt
+Cloudinary
