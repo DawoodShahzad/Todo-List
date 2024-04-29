@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import shoppingListRoutes from './routes/shoppingListRoutes';
-import userRoutes from './routes/userRoutes';
+import shoppingListRoutes from './src/routes/shoppingListRoutes';
+import userRoutes from './src/routes/userRoutes';
 import dotenv from 'dotenv';
 
 dotenv.config()
