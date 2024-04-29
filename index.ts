@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import shoppingListRoutes from './src/routes/shoppingListRoutes';
 import userRoutes from './src/routes/userRoutes';
+import todoListRoutes from './src/routes/todoListRoutes';
 import dotenv from 'dotenv';
 
 dotenv.config()
@@ -14,8 +14,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/api', shoppingListRoutes);
 app.use('/api', userRoutes);
+app.use('/api', todoListRoutes);
 
 mongoose.connect(mongoUri)
     .then(() => {
