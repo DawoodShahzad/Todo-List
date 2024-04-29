@@ -9,9 +9,9 @@ import dotenv from 'dotenv';
 dotenv.config()
 
 cloudinaryV2.config({
-  cloud_name: 'your-cloudinary-cloud-name',
-  api_key: 'your-cloudinary-api-key',
-  api_secret: 'your-cloudinary-api-secret'
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
 });
 
 const storage = new CloudinaryStorage({
@@ -25,7 +25,6 @@ const storage = new CloudinaryStorage({
 const parser = multer({ storage: storage });
 
 //console.log('process.env.JWT_SECRET: ',process.env.JWT_SECRET);
-
 
 const userService = {
 
